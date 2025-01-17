@@ -2,8 +2,6 @@
 title: "About"
 ---
 
-About this site
+About this Author
 
-```{r}
-1 + 1
-```
+Hi ! I am **Shreya Agarwal** pursuing Masters of IT in Business (MITB) specialising in Data Analytics from Singapore Management University (SMU). This website was created for my course ISSS608 - Visual Analytics where I will be uploading all the coursework being done by me.
