@@ -3,3 +3,5 @@ title: "ISSS608-VAA"
 ---
 
 Welcome to **ISSS608 Visual Analytics and Applications**. In this website, you will find my coursework prepared for this course.
+
+Hi ! I am Shreya Agarwal pursuing Masters of IT in Business (MITB) specialising in Data Analytics from Singapore Management University (SMU). This website was created for my course ISSS608 - Visual Analytics taught by Professor Dr. Kam Tin Seong, where I will be uploading all the coursework being done by me.

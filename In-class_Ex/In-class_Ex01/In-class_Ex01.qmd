@@ -2,3 +2,5 @@
 title: "In-class Exercise 1"
 author: "Shreya Agarwal"
 ---
+
+Refer to Tableau Public for the dashboard.
