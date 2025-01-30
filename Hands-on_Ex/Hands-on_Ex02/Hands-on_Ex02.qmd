@@ -236,7 +236,6 @@ ggplot(data = exam_data,
 :::
 
 ::: panel-tabset
-
 ## The plot
 
 ```{r}
