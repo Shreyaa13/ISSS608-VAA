@@ -1,0 +1,12 @@
+---
+title: "Hands-on Ex 4.2"
+author: "Shreya Agarwal"
+date: "February 1, 2025"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+---
