@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex 3a - Programming Interactive Data Visualisation with R"
+title: "Hands-on Ex 3.1 - Programming Interactive Data Visualisation with R"
 author: "Shreya Agarwal"
 date: "30 January 2025"
 date-modified: "last-modified"

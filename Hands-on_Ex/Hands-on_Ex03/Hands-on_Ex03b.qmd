@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex 3b - Programming Animated Statistical Graphics with R"
+title: "Hands-on Ex 3.2 - Programming Animated Statistical Graphics with R"
 author: "Shreya Agarwal"
 date: "30 January 2025"
 date-modified: "last-modified"
