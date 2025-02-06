@@ -1,5 +1,5 @@
 ---
-title: "Hands-on Ex 4.3"
+title: "Hands-on Ex 4.3 - Visualising Uncertainity"
 author: "Shreya Agarwal"
 date: "February 1, 2025"
 date-modified: "last-modified"
@@ -10,3 +10,393 @@ execute:
   message: false
   freeze: true
 ---
+
+# **4.1 Learning Outcome**
+
+In this chapter, we will visualize uncertainty through statistical graphics. By the end, we will -
+
+-   Plot error bars with ggplot2
+-   Create interactive error bars using ggplot2, plotly, and DT
+-   Make advanced plots with ggdist
+-   Create hypothetical outcome plots (HOPs) using the ungeviz package
+
+# **4.2 Getting Started**
+
+## **4.2.1 Installing and loading the packages**
+
+This exercise will use the following R packages:
+
+-   **tidyverse**: A collection of packages for data science
+-   **plotly**: For interactive plots
+-   **gganimate**: For animation plots
+-   **DT**: For interactive HTML tables
+-   **crosstalk**: For cross-widget interactions (e.g., linked brushing and filtering)
+-   **ggdist**: For visualizing distribution and uncertainty
+
+```{r}
+pacman::p_load(plotly, crosstalk, DT, 
+               ggdist, ggridges, colorspace,
+               gganimate, tidyverse)
+```
+
+## **4.2.2 Data import**
+
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+# **4.3 Visualizing the uncertainty of point estimates: ggplot2 methods**
+
+A point estimate is a single value (e.g., mean), while uncertainty is expressed as standard error or confidence intervals.
+
+*Important:* Don’t confuse point estimate uncertainty with sample variation.
+
+In this section, we plot error bars for math scores by race using the *exam* data frame. The code below calculates the required summary statistics.
+
+```{r}
+my_sum <- exam %>%
+  group_by(RACE) %>%
+  summarise(
+    n=n(),
+    mean=mean(MATHS),
+    sd=sd(MATHS)
+    ) %>%
+  mutate(se=sd/sqrt(n-1))
+```
+
+Key points:
+
+-   `group_by()` of **dplyr** package is used to group the observation by RACE,
+-   `summarise()` is used to compute the count of observations, mean, standard deviation
+-   `mutate()` is used to derive standard error of Maths by RACE, and
+-   the output is save as a tibble data table called *my_sum*.
+
+Now, we display *my_sum* tibble data frame in an html table format.
+
+::: panel-tabset
+## The code chunk
+
+```{r}
+#| eval: false
+knitr::kable(head(my_sum), format = 'html')
+```
+
+## The table
+
+```{r}
+#| echo: false
+knitr::kable(head(my_sum), format = 'html')
+```
+:::
+
+## **4.3.1 Plotting standard error bars of point estimates**
+
+Now, we plot the standard error bars of mean maths score by race
+
+::: panel-tabset
+## The plot
+
+```{r}
+#| echo: false
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean maths score by rac")
+```
+
+## The code chunk
+
+```{r}
+#| eval: false
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=RACE, 
+        ymin=mean-se, 
+        ymax=mean+se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  ggtitle("Standard error of mean maths score by rac")
+```
+:::
+
+## **4.3.2 Plotting confidence interval of point estimates**
+
+Instead of plotting the standard error bar of point estimates, we can also plot the confidence intervals of mean maths score by race
+
+::: panel-tabset
+## The plot
+
+```{r}
+#| echo: false
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=reorder(RACE, -mean), 
+        ymin=mean-1.96*se, 
+        ymax=mean+1.96*se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  labs(x = "Maths score",
+       title = "95% confidence interval of mean maths score by race")
+```
+
+## The code chunk
+
+```{r}
+#| eval: false
+ggplot(my_sum) +
+  geom_errorbar(
+    aes(x=reorder(RACE, -mean), 
+        ymin=mean-1.96*se, 
+        ymax=mean+1.96*se), 
+    width=0.2, 
+    colour="black", 
+    alpha=0.9, 
+    linewidth=0.5) +
+  geom_point(aes
+           (x=RACE, 
+            y=mean), 
+           stat="identity", 
+           color="red",
+           size = 1.5,
+           alpha=1) +
+  labs(x = "Maths score",
+       title = "95% confidence interval of mean maths score by race")
+```
+:::
+
+## **4.3.3 Visualizing the uncertainty of point estimates with interactive error bars**
+
+In this part, we plot interactive error bars for the 99% confidence interval of mean maths score by race
+
+::: panel-tabset
+## The plot
+
+```{r}
+#| echo: false
+shared_df = SharedData$new(my_sum)
+
+bscols(widths = c(4,8),
+       ggplotly((ggplot(shared_df) +
+                   geom_errorbar(aes(
+                     x=reorder(RACE, -mean),
+                     ymin=mean-2.58*se, 
+                     ymax=mean+2.58*se), 
+                     width=0.2, 
+                     colour="black", 
+                     alpha=0.9, 
+                     size=0.5) +
+                   geom_point(aes(
+                     x=RACE, 
+                     y=mean, 
+                     text = paste("Race:", `RACE`, 
+                                  "<br>N:", `n`,
+                                  "<br>Avg. Scores:", round(mean, digits = 2),
+                                  "<br>95% CI:[", 
+                                  round((mean-2.58*se), digits = 2), ",",
+                                  round((mean+2.58*se), digits = 2),"]")),
+                     stat="identity", 
+                     color="red", 
+                     size = 1.5, 
+                     alpha=1) + 
+                   xlab("Race") + 
+                   ylab("Average Scores") + 
+                   theme_minimal() + 
+                   theme(axis.text.x = element_text(
+                     angle = 45, vjust = 0.5, hjust=1)) +
+                   ggtitle("99% Confidence interval of average /<br>maths scores by race")), 
+                tooltip = "text"), 
+       DT::datatable(shared_df, 
+                     rownames = FALSE, 
+                     class="compact", 
+                     width="100%", 
+                     options = list(pageLength = 10,
+                                    scrollX=T), 
+                     colnames = c("No. of pupils", 
+                                  "Avg Scores",
+                                  "Std Dev",
+                                  "Std Error")) %>%
+         formatRound(columns=c('mean', 'sd', 'se'),
+                     digits=2))
+```
+
+## The code chunk
+
+```{r}
+#| eval: false
+shared_df = SharedData$new(my_sum)
+
+bscols(widths = c(4,8),
+       ggplotly((ggplot(shared_df) +
+                   geom_errorbar(aes(
+                     x=reorder(RACE, -mean),
+                     ymin=mean-2.58*se, 
+                     ymax=mean+2.58*se), 
+                     width=0.2, 
+                     colour="black", 
+                     alpha=0.9, 
+                     size=0.5) +
+                   geom_point(aes(
+                     x=RACE, 
+                     y=mean, 
+                     text = paste("Race:", `RACE`, 
+                                  "<br>N:", `n`,
+                                  "<br>Avg. Scores:", round(mean, digits = 2),
+                                  "<br>95% CI:[", 
+                                  round((mean-2.58*se), digits = 2), ",",
+                                  round((mean+2.58*se), digits = 2),"]")),
+                     stat="identity", 
+                     color="red", 
+                     size = 1.5, 
+                     alpha=1) + 
+                   xlab("Race") + 
+                   ylab("Average Scores") + 
+                   theme_minimal() + 
+                   theme(axis.text.x = element_text(
+                     angle = 45, vjust = 0.5, hjust=1)) +
+                   ggtitle("99% Confidence interval of average /<br>maths scores by race")), 
+                tooltip = "text"), 
+       DT::datatable(shared_df, 
+                     rownames = FALSE, 
+                     class="compact", 
+                     width="100%", 
+                     options = list(pageLength = 10,
+                                    scrollX=T), 
+                     colnames = c("No. of pupils", 
+                                  "Avg Scores",
+                                  "Std Dev",
+                                  "Std Error")) %>%
+         formatRound(columns=c('mean', 'sd', 'se'),
+                     digits=2))
+```
+:::
+
+# **4.4 Visualising Uncertainty: ggdist package**
+
+[**ggdist**](https://mjskay.github.io/ggdist/index.html) is an R package that extends ggplot2 to visualize distributions and uncertainty. It supports both frequentist (confidence/bootstrap distributions) and Bayesian (probability distributions) models, using distribution-based visualization for both.
+
+## **4.4.1 Visualizing the uncertainty of point estimates: ggdist methods**
+
+Using  [`stat_pointinterval()`](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) of **ggdist** , we build a visual for displaying distribution of maths scores by race
+
+```{r}
+exam %>%
+  ggplot(aes(x = RACE, 
+             y = MATHS)) +
+  stat_pointinterval() +
+  labs(
+    title = "Visualising confidence intervals of mean math score",
+    subtitle = "Mean Point + Multiple-interval plot")
+```
+
+For example, in the code chunk below the following arguments are used:
+
+-   .width = 0.95
+-   .point = median
+-   .interval = qi
+
+```{r}
+exam %>%
+  ggplot(aes(x = RACE, y = MATHS)) +
+  stat_pointinterval(.width = 0.95,
+  .point = median,
+  .interval = qi) +
+  labs(
+    title = "Visualising confidence intervals of median math score",
+    subtitle = "Median Point + Multiple-interval plot")
+```
+
+## **4.4.2 Visualizing the uncertainty of point estimates: ggdist methods**
+
+```{r}
+exam %>%
+  ggplot(aes(x = RACE, 
+             y = MATHS)) +
+  stat_pointinterval(
+    show.legend = FALSE) +   
+  labs(
+    title = "Visualising confidence intervals of mean math score",
+    subtitle = "Mean Point + Multiple-interval plot")
+```
+
+## **4.4.3 Visualizing the uncertainty of point estimates: ggdist methods**
+
+[`stat_gradientinterval()`](https://mjskay.github.io/ggdist/reference/stat_gradientinterval.html) of **ggdist** is used to build a visual for displaying distribution of maths scores by race.
+
+```{r}
+exam %>%
+  ggplot(aes(x = RACE, 
+             y = MATHS)) +
+  stat_gradientinterval(   
+    fill = "skyblue",      
+    show.legend = TRUE     
+  ) +                        
+  labs(
+    title = "Visualising confidence intervals of mean math score",
+    subtitle = "Gradient + interval plot")
+```
+
+# **4.5 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)**
+
+## **4.5.1 Installing ungeviz package**
+
+```{r}
+devtools::install_github("wilkelab/ungeviz")
+```
+
+## **4.5.2 Launch the application in R**
+
+```{r}
+library(ungeviz)
+```
+
+## **4.5.3 Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)**
+
+The code chunk below is used to build the HOPs.
+
+```{r}
+ggplot(data = exam, 
+       (aes(x = factor(RACE), 
+            y = MATHS))) +
+  geom_point(position = position_jitter(
+    height = 0.3, 
+    width = 0.05), 
+    size = 0.4, 
+    color = "#0072B2", 
+    alpha = 1/2) +
+  geom_hpline(data = sampler(25, 
+                             group = RACE), 
+              color = "#D55E00") +
+  theme_bw() + 
+  transition_states(.draw, 1, 3)
+```
