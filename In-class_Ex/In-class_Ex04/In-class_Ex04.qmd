@@ -1,0 +1,37 @@
+---
+title: "In-class Exercise 4"
+author: "Shreya Agarwal"
+date: "February 8, 2025"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+---
+
+# **1. Getting Started**
+
+## **1.1 Installing and loading the packages**
+
+```{r}
+pacman::p_load(tidyverse)
+```
+
+## **1.2 Data import**
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+# **2. Plotting Visualization**
+
+## 2.1 Boxplot 
+
+```{r}
+ggplot(data=exam_data, 
+       aes(x = ENGLISH,       
+           y= CLASS)) +    
+  geom_boxplot()            
+```

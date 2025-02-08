@@ -1,0 +1,17 @@
+{
+  "hash": "045422e5e2ff9264a7d9c165d4aae2d1",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"In-class Exercise 4\"\nauthor: \"Shreya Agarwal\"\ndate: \"February 8, 2025\"\ndate-modified: \"last-modified\"\nexecute: \n  echo: true\n  eval: true\n  warning: false\n  message: false\n  freeze: true\n---\n\n\n\n# **1. Getting Started**\n\n## **1.1 Installing and loading the packages**\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(tidyverse)\n```\n:::\n\n\n\n## **1.2 Data import**\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam_data <- read_csv(\"data/Exam_data.csv\")\n```\n:::\n\n\n\n# **2. Plotting Visualization**\n\n## 2.1 Boxplot \n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(data=exam_data, \n       aes(x = ENGLISH,       \n           y= CLASS)) +    \n  geom_boxplot()            \n```\n\n::: {.cell-output-display}\n![](In-class_Ex04_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "In-class_Ex04_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
