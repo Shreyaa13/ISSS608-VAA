@@ -1054,7 +1054,7 @@
     "href": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#import-the-data",
     "title": "Take-home Exercise 1 - Ship Performance in the Gulf of Guinea",
     "section": "2.2 Import the data",
-    "text": "2.2 Import the data\nThe dataset (data/Ship_Performance_Dataset.csv) used in the exercise is the Ship Performance in the Gulf of Guinea retrieved from kaggle - Ship Performance Clustering Dataset.\nThe code chunk below imports ship_data.csv into R environment by using read_csv() function of readr package. \n\n#Reading the data into R environment\nship_data &lt;- read_csv(\"data/Ship_Performance_Dataset.csv\")"
+    "text": "2.2 Import the data\nThe dataset (data/Ship_Performance_Dataset.csv) used in the exercise is the Ship Performance in the Gulf of Guinea retrieved from kaggle - Ship Performance Clustering Dataset.\nThe code chunk below imports the CSV file into R environment by using read_csv() function of readr package as ship_data. \n\n#Reading the data into R environment\nship_data &lt;- read_csv(\"data/Ship_Performance_Dataset.csv\")"
   },
   {
     "objectID": "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html#check-for-duplicates",

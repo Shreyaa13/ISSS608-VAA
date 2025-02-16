@@ -54,7 +54,7 @@ pacman::p_load(tidyverse, ggthemes, patchwork,
 
 The dataset (*data/Ship_Performance_Dataset.csv*) used in the exercise is the Ship Performance in the Gulf of Guinea retrieved from kaggle - [Ship Performance Clustering Dataset](https://www.kaggle.com/datasets/jeleeladekunlefijabi/ship-performance-clustering-dataset/data).
 
-The code chunk below imports *ship_data.csv* into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. 
+The code chunk below imports the CSV file into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package as *ship_data*. 
 
 ```{r}
 #Reading the data into R environment
