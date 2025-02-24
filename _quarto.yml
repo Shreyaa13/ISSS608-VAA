@@ -52,9 +52,18 @@ website:
           - text: "Take-home Exercise 1"
             href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
             
+      - text: "Group Project"
+            
     right:
-      - href: index.qmd
-        text: Home
+      - icon: linkedin
+        href: "https://www.linkedin.com/in/shreyaagarwal132"
+        aria-label: "LinkedIn"
+      - icon: github
+        href: "https://github.com/Shreyaa13"
+        aria-label: "GitHub"
+      - icon: bar-chart
+        href: "https://public.tableau.com/app/profile/shreya.agarwal8147/vizzes"
+        aria-label: "Tableau"
 
 format:
   html:
