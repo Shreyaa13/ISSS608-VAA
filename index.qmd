@@ -1,5 +1,5 @@
 ---
-title: "ISSS608-VAA - Visual Analytics and Applications"
+title: "ISSS608 - Visual Analytics and Applications"
 ---
 
 ## **Welcome!**
