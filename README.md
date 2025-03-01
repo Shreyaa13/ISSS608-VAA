@@ -1,3 +1,3 @@
-This website showcases my coursework for ISSS608 - Visual Analytics and Applications. Here, you’ll find projects, assignments, and insights gained throughout the course.
-
+This repository showcases my coursework for ISSS608 - Visual Analytics and Applications. Here, you’ll find projects, assignments, and insights gained throughout the course.
+The content has been deployed to Netlify App.
 Website Link - https://visualanalytics-ay2024-25-shreyaag.netlify.app/
