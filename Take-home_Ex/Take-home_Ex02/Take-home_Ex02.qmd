@@ -958,7 +958,7 @@ ggplot(slope_data, aes(x = factor(Year), y = Total_Trade, group = Data_Series, c
 ```
 :::
 
-#### Insights - 
+#### Insights -
 
 -   **All trading partners show positive growth over the period,** indicating expanding global trade relationships across the board.
 -   **China maintains the dominant position** with the highest trade value and strongest growth, increasing from S\$1,285.7 billion to S\$1,701.8 billion (32% growth).
@@ -971,13 +971,13 @@ ggplot(slope_data, aes(x = factor(Year), y = Total_Trade, group = Data_Series, c
 
 In this exercise, we explored Singapore’s merchandise trade trends (2015-2024) through data visualization makeovers and time-series analysis.
 
-#### Visualization Makeovers  
+#### Visualization Makeovers
 
 -   The improved stacked bar chart for total merchandise trade enables direct comparison, uses consistent colors, and highlights growth trends effectively.
 -   Replaced the bubble chart for trade balance with a diverging bar chart, making surpluses and deficits clearer across major trading partners.
 -   Improved commodity trade visualizations by sorting categories, using clearer labels, and revising color schemes for better interpretation.
 
-#### Time-Series Analysis 
+#### Time-Series Analysis
 
 -   Singapore’s trade grew consistently despite COVID-19 disruptions (2020-2021), with a strong recovery post-pandemic.
 -   Exports have consistently outpaced imports, ensuring a trade surplus across most years.
