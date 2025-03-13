@@ -35,6 +35,12 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex05/Hands-on_Ex05.5.html"
           - text: "Ex 7 - Visualising and Analysing Time-oriented Data"
             href: "Hands-on_Ex/Hands-on_Ex07/Hands-on_Ex07.html"
+          - text: "Ex 8.1 - Choropleth Mapping in R"
+            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.1.html"
+          - text: "Ex 8.2 - Visualising Geospatial Point Data"
+            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.2.html"
+          - text: "Ex 8.3 - Analytical Mapping"
+            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.3.html"
             
       - text: "In-class Exercise"
         menu: 
@@ -59,6 +65,7 @@ website:
             href: "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html"
             
       - text: "Group Project"
+        href: "https://isss608-g6-weatherwisesg.netlify.app/"
             
     right:
       - icon: linkedin
