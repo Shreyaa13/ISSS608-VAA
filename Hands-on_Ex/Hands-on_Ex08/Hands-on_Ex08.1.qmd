@@ -161,19 +161,17 @@ Despite its usefulness of drawing a choropleth map quickly and easily, the disad
 
 ```{r}
 tm_shape(mpsz_pop2020)+
-  tm_fill("DEPENDENCY", 
-          style = "quantile", 
-          palette = "Blues",
-          title = "Dependency ratio") +
-  tm_layout(main.title = "Distribution of Dependency Ratio by planning subzone",
-            main.title.position = "center",
-            main.title.size = 1.2,
-            legend.height = 0.45, 
-            legend.width = 0.35,
-            frame = TRUE) +
-  tm_borders(alpha = 0.5) +
+  tm_polygons(fill = "DEPENDENCY", 
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "Dependency ratio")) +
+  tm_title("Distribution of Dependency Ratio by planning subzone") +
+  tm_layout(frame = TRUE) +
+  tm_borders(fill_alpha = 0.5) +
   tm_compass(type="8star", size = 2) +
-  tm_scale_bar() +
   tm_grid(alpha =0.2) +
   tm_credits("Source: Planning Sub-zone boundary from Urban Redevelopment Authorithy (URA)\n and Population data from Department of Statistics DOS", 
              position = c("left", "bottom"))
@@ -204,7 +202,6 @@ tm_shape(mpsz_pop2020)+
 Things to learn from *tm_polygons()*:
 
 -   The default interval binning used to draw the choropleth map is called “pretty”. A detailed discussion of the data classification methods supported by **tmap** will be provided in sub-section 8.4.3.
--   The default colour scheme used is `YlOrRd` of ColorBrewer. We will learn more about the color scheme in sub-section 8.4.4.
 -   By default, Missing value will be shaded in grey.
 
 ### 8.4.2.3 Drawing a choropleth map using *tm_fill()* and *tm_border()*
@@ -225,7 +222,7 @@ To add the boundary of the planning subzones, tm_borders will be used as shown i
 ```{r}
 tm_shape(mpsz_pop2020)+
   tm_fill("DEPENDENCY") +
-  tm_borders(lwd = 0.1,  alpha = 1)
+  tm_borders(lwd = 0.1,  fill_alpha = 1)
 ```
 
 Notice that light-gray border lines have been added on the choropleth map.
@@ -368,20 +365,18 @@ In the code chunk below, *tm_compass()*, *tm_scale_bar()* and *tm_grid()* are us
 
 ```{r}
 tm_shape(mpsz_pop2020)+
-  tm_fill("DEPENDENCY", 
-          style = "quantile", 
-          palette = "Blues",
-          title = "No. of persons") +
-  tm_layout(main.title = "Distribution of Dependency Ratio \nby planning subzone",
-            main.title.position = "center",
-            main.title.size = 1.2,
-            legend.height = 0.45, 
-            legend.width = 0.35,
-            frame = TRUE) +
-  tm_borders(alpha = 0.5) +
+  tm_polygons(fill = "DEPENDENCY", 
+              fill.scale = tm_scale_intervals(
+                style = "quantile",
+                n = 5,
+                values = "brewer.blues"),
+              fill.legend = tm_legend(
+                title = "Dependency ratio")) +
+  tm_title("Distribution of Dependency Ratio by planning subzone") +
+  tm_layout(frame = TRUE) +
+  tm_borders(fill_alpha = 0.5) +
   tm_compass(type="8star", size = 2) +
-  tm_scale_bar(width = 0.15) +
-  tm_grid(lwd = 0.1, alpha = 0.2) +
+  tm_grid(alpha =0.2) +
   tm_credits("Source: Planning Sub-zone boundary from Urban Redevelopment Authorithy (URA)\n and Population data from Department of Statistics DOS", 
              position = c("left", "bottom"))
 ```
@@ -437,8 +432,7 @@ tm_shape(mpsz_pop2020) +
           palette = "Blues",
           thres.poly = 0) + 
   tm_facets(by="REGION_N", 
-            free.coords=TRUE, 
-            drop.shapes=FALSE) +
+            free.coords=TRUE) +
   tm_layout(legend.show = FALSE,
             title.position = c("center", "center"), 
             title.size = 20) +

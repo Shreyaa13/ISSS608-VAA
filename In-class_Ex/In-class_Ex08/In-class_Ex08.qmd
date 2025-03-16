@@ -1,0 +1,18 @@
+---
+title: "In-class Exercise 8 - Geospatial Analysis using Tableau Desktop"
+author: "Shreya Agarwal"
+date: "15 March 2025"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+---
+
+## Refer to Tableau Dashboard - 
+
+-   [In-class Ex08.1](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex08_17420191887240/Sheet1)
+
+-   [In-class Ex08.2](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex08_2_17420211390690/Sheet1)
