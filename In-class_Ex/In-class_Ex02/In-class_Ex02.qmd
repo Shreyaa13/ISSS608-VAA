@@ -3,4 +3,4 @@ title: "In-class Exercise 2"
 author: "Shreya Agarwal"
 ---
 
-Refer to Tableau Public for the dashboard.
+Refer to Tableau Public for the [dashboard](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex02_17377899917370/In-class_Ex02Dashboard).

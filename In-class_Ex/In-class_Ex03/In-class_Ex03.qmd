@@ -1,0 +1,22 @@
+---
+title: "In-class Exercise 3"
+author: "Shreya Agarwal"
+date: "01 February 2025"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+---
+
+## Refer to Tableau Dashboard -
+
+-   [In-class Ex03.1](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex03_1/In-class_Ex03_1Dashboard)
+
+-   [In-class Ex03.2](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex03_2_17383915583050/In-class_Ex03Dashboard)
+
+-   [In-class Ex03.3](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex03_3_17383925183590/In-class_Ex03_3Dashboard)
+
+-   [In-class Ex03.4](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex03_4-Story/In-class_Ex03Story)

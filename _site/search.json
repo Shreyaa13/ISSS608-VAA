@@ -2147,5 +2147,26 @@
     "title": "Hands-on Ex 9 - Modelling, Visualising and Analysing Network Data with R",
     "section": "9.8.6 Interactivity",
     "text": "9.8.6 Interactivity\nIn the code chunk below, visOptions() is used to incorporate interactivity features in the data visualisation.\n\nThe argument highlightNearest highlights nearest when clicking a node.\nThe argument nodesIdSelection adds an id node selection creating an HTML select element.\n\n\nvisNetwork(GAStech_nodes,\n           GAStech_edges_aggregated) %&gt;%\n  visIgraphLayout(layout = \"layout_with_fr\") %&gt;%\n  visOptions(highlightNearest = TRUE,\n             nodesIdSelection = TRUE) %&gt;%\n  visLegend() %&gt;%\n  visLayout(randomSeed = 123)\n\n\n\n\n\nVisit Option to find out more about visOption’s argument."
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex06/In-class_Ex06.html",
+    "href": "In-class_Ex/In-class_Ex06/In-class_Ex06.html",
+    "title": "In-class Exercise 6 - Designing Shiny Application",
+    "section": "",
+    "text": "Refer to Shiny App -\nIn-class Ex06"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex03/In-class_Ex03.html",
+    "href": "In-class_Ex/In-class_Ex03/In-class_Ex03.html",
+    "title": "In-class Exercise 3",
+    "section": "",
+    "text": "In-class Ex03.1\nIn-class Ex03.2\nIn-class Ex03.3\nIn-class Ex03.4"
+  },
+  {
+    "objectID": "In-class_Ex/In-class_Ex03/In-class_Ex03.html#refer-to-tableau-dashboard--",
+    "href": "In-class_Ex/In-class_Ex03/In-class_Ex03.html#refer-to-tableau-dashboard--",
+    "title": "In-class Exercise 3",
+    "section": "",
+    "text": "In-class Ex03.1\nIn-class Ex03.2\nIn-class Ex03.3\nIn-class Ex03.4"
   }
 ]

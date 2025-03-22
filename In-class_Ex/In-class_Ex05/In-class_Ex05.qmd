@@ -170,3 +170,7 @@ plot(parameters(model1))
 ggcoefstats(model1, 
             output = "plot")
 ```
+
+# 4. Tableau Dashboard
+
+Using realis2018 data, we created Treemap in [tableau](https://public.tableau.com/app/profile/shreya.agarwal8147/viz/In-class_Ex05_17396054644820/In-class_Ex05).

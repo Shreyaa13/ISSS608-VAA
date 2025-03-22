@@ -41,13 +41,13 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.2.html"
           - text: "Ex 8.3 - Analytical Mapping"
             href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.3.html"
+          - text: "Ex 8.4 - Analysing and Visualising Spatial Interpolation"
+            href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08.4.html"
           - text: "Ex 9 - Modelling, Visualising and Analysing Network Data with R"
             href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09.html"
+          - text: "Ex 10 - Information Dashboard Design: R methods"
+            href: "Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html"
             
-      - text: "Hands-on Exercise"
-        menu: 
-          - text: "Ex 9 - Modelling, Visualising and Analysing Network Data with R"
-            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09.html"
             
       - text: "In-class Exercise"
         menu: 
@@ -61,6 +61,8 @@ website:
             href: "In-class_Ex/In-class_Ex04/In-class_Ex04.html"
           - text: "In-class Exercise 5"
             href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html"
+          - text: "In-class Exercise 6"
+            href: "In-class_Ex/In-class_Ex06/In-class_Ex06.html"
           - text: "In-class Exercise 7"
             href: "In-class_Ex/In-class_Ex07/In-class_Ex07.html"
           - text: "In-class Exercise 8"
@@ -72,6 +74,8 @@ website:
             href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
           - text: "Take-home Exercise 2"
             href: "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html"
+          - text: "Take-home Exercise 3"
+            href: "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html"
             
       - text: "Group Project"
         href: "https://isss608-g6-weatherwisesg.netlify.app/"
