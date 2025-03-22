@@ -1,0 +1,13 @@
+---
+title: "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application"
+author: "Shreya Agarwal"
+date: "22 March 2025"
+date-modified: "last-modified"
+execute: 
+  echo: true
+  eval: true
+  warning: false
+  message: false
+  freeze: true
+---
+
