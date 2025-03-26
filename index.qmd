@@ -6,7 +6,7 @@ title: "ISSS608 - Visual Analytics and Applications"
 
 Hi, I'm **Shreya Agarwal**, pursuing **Masters of IT in Business (MITB)** with a specialization in Data Analytics at **Singapore Management University (SMU)**.
 
-This website showcases my coursework for ISSS608 - Visual Analytics and Applications, taught by[Dr. Kam Tin Seong](https://faculty.smu.edu.sg/profile/kam-tin-seong-486). Here, you'll find projects, assignments, and insights gained throughout the course.
+This website showcases my coursework for ISSS608 - Visual Analytics and Applications, taught by [Dr. Kam Tin Seong](https://faculty.smu.edu.sg/profile/kam-tin-seong-486). Here, you'll find projects, assignments, and insights gained throughout the course.
 
 ## **About the Course**
 
