@@ -2413,5 +2413,201 @@
     "title": "Hands-on Ex 10 - Information Dashboard Design: R methods",
     "section": "10.7.6 Changing from sparkline to sparkbar",
     "text": "10.7.6 Changing from sparkline to sparkbar\nInstead of displaying the values as sparklines, we can display them as sparkbars as shown below.\n\nreactable(\n  report,\n  defaultPageSize = 13,\n  columns = list(\n    Product = colDef(maxWidth = 200),\n    `Monthly Sales` = colDef(\n      cell = react_sparkbar(\n        report,\n        highlight_bars = highlight_bars(\n          min = \"red\", max = \"blue\"),\n        bandline = \"innerquartiles\",\n        statline = \"mean\")\n    )\n  )\n)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "",
+    "text": "In this take-home exercise, we have to -\n\nSelect one functional module from our proposed Shiny application (EDA and CDA).\nEvaluate R packages required by this module to ensure they are supported by CRAN.\nCreate prototype for our module by preparing/testing the R codes to be run and return the correct output as expected, determine the parameters and outputs that will be exposed on the Shiny applications.\nInclude a dedicated section on UI Design -A visual storyboard/mockup to demonstrate user flow and interactions detailing different UI components to be used and their purposes and placement. For storyboarding the UI Design, the Storyboard link is referred."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#loading-the-packages",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#loading-the-packages",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "2.1 Loading the Packages",
+    "text": "2.1 Loading the Packages\n\npacman::p_load(lubridate, ggthemes, tidyverse,\n               ggridges, corrplot, GGally, ggstatsplot,\n               DT, viridis, forcats, nortest, patchwork,\n               tsibble, feasts, ggpubr)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#importing-the-data",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#importing-the-data",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "2.2 Importing the data",
+    "text": "2.2 Importing the data\nWe import the Singapore Cleaned Weather Data as weather in the code below to explore trends across Singapore and various locations within the country. The dataset consists of daily weather records..\n\nweather &lt;- read_csv(\"data/climate_final_2018_2024.csv\")"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#creating-date-field-and-converting-month-from-numeric-to-labels",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#creating-date-field-and-converting-month-from-numeric-to-labels",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "3.1 Creating Date Field and Converting Month from numeric to labels",
+    "text": "3.1 Creating Date Field and Converting Month from numeric to labels\n\nweather_EDA &lt;- weather %&gt;%\n  mutate(\n    Date = make_date(Year, Month, Day),\n    Station = as.factor(Station),\n    Month = factor(Month, levels = 1:12, labels = month.abb)\n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#interactive-table-of-our-data",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#interactive-table-of-our-data",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "3.2 Interactive table of our data",
+    "text": "3.2 Interactive table of our data\n\ndatatable(\n  weather_EDA,\n  options = list(\n    pageLength = 5,\n    autoWidth = TRUE,\n    scrollX = TRUE\n  ),\n  filter = 'top',\n  rownames = FALSE,\n  caption = \"📊 Interactive Weather Data Table\"\n)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#temperature",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#temperature",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "4.1 Temperature",
+    "text": "4.1 Temperature\n\nhottest_day &lt;- weather_EDA %&gt;% slice_max(`Maximum Temperature (Celsius)`, n = 1)\ncoldest_day &lt;- weather_EDA %&gt;% slice_min(`Minimum Temperature (Celsius)`, n = 1)\n\nhottest_month &lt;- weather_EDA %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Avg_Mean_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  slice_max(Avg_Mean_Temp, n = 1)\n\ncoldest_month &lt;- weather_EDA %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Avg_Mean_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  slice_min(Avg_Mean_Temp, n = 1)\n\nhottest_year &lt;- weather_EDA %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Yearly_Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  slice_max(Yearly_Avg_Temp, n = 1)\n\ncoldest_year &lt;- weather_EDA %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Yearly_Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  slice_min(Yearly_Avg_Temp, n = 1)\n\nhottest_day\n\n# A tibble: 2 × 11\n  Station        Station_Type      Year Month   Day `Daily Rainfall Total (mm)`\n  &lt;fct&gt;          &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;                       &lt;dbl&gt;\n1 Sentosa Island Full AWS Station  2020 Dec       2                        10.4\n2 Sentosa Island Full AWS Station  2020 Dec       3                         8.6\n# ℹ 5 more variables: `Mean Temperature (Celsius)` &lt;dbl&gt;,\n#   `Maximum Temperature (Celsius)` &lt;dbl&gt;,\n#   `Minimum Temperature (Celsius)` &lt;dbl&gt;, `Mean Wind Speed (km/h)` &lt;dbl&gt;,\n#   Date &lt;date&gt;\n\ncoldest_day\n\n# A tibble: 1 × 11\n  Station       Station_Type      Year Month   Day `Daily Rainfall Total (mm)`\n  &lt;fct&gt;         &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;                       &lt;dbl&gt;\n1 Jurong (West) Full AWS Station  2022 Feb      20                          37\n# ℹ 5 more variables: `Mean Temperature (Celsius)` &lt;dbl&gt;,\n#   `Maximum Temperature (Celsius)` &lt;dbl&gt;,\n#   `Minimum Temperature (Celsius)` &lt;dbl&gt;, `Mean Wind Speed (km/h)` &lt;dbl&gt;,\n#   Date &lt;date&gt;\n\nhottest_month\n\n# A tibble: 1 × 3\n   Year Month Avg_Mean_Temp\n  &lt;dbl&gt; &lt;fct&gt;         &lt;dbl&gt;\n1  2023 May            29.3\n\ncoldest_month\n\n# A tibble: 1 × 3\n   Year Month Avg_Mean_Temp\n  &lt;dbl&gt; &lt;fct&gt;         &lt;dbl&gt;\n1  2021 Jan            26.0\n\nhottest_year\n\n# A tibble: 1 × 2\n   Year Yearly_Avg_Temp\n  &lt;dbl&gt;           &lt;dbl&gt;\n1  2024            28.4\n\ncoldest_year\n\n# A tibble: 1 × 2\n   Year Yearly_Avg_Temp\n  &lt;dbl&gt;           &lt;dbl&gt;\n1  2022            27.8"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#daily-rainfall",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#daily-rainfall",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "4.2 Daily Rainfall",
+    "text": "4.2 Daily Rainfall\n\n# Rainfall\nwettest_day &lt;- weather_EDA %&gt;% slice_max(`Daily Rainfall Total (mm)`, n = 1)\n\nwettest_month &lt;- weather_EDA %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Monthly_Rain = sum(`Daily Rainfall Total (mm)`, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  slice_max(Monthly_Rain, n = 1)\n\nwettest_year &lt;- weather_EDA %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Yearly_Rain = sum(`Daily Rainfall Total (mm)`, na.rm = TRUE)) %&gt;%\n  slice_max(Yearly_Rain, n = 1)\n\nrainiest_month_by_day_count &lt;- weather_EDA %&gt;%\n  filter(`Daily Rainfall Total (mm)` &gt; 0) %&gt;%  # Only rainy days\n  group_by(Station, Year, Month) %&gt;%\n  summarise(Rainy_Days = n(), .groups = \"drop\") %&gt;%\n  slice_max(Rainy_Days, n = 1)\n\nwettest_day\n\n# A tibble: 1 × 11\n  Station Station_Type      Year Month   Day `Daily Rainfall Total (mm)`\n  &lt;fct&gt;   &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;                       &lt;dbl&gt;\n1 Changi  Full AWS Station  2021 Jan       2                        211.\n# ℹ 5 more variables: `Mean Temperature (Celsius)` &lt;dbl&gt;,\n#   `Maximum Temperature (Celsius)` &lt;dbl&gt;,\n#   `Minimum Temperature (Celsius)` &lt;dbl&gt;, `Mean Wind Speed (km/h)` &lt;dbl&gt;,\n#   Date &lt;date&gt;\n\nwettest_month\n\n# A tibble: 1 × 3\n   Year Month Monthly_Rain\n  &lt;dbl&gt; &lt;fct&gt;        &lt;dbl&gt;\n1  2021 Jan          7346.\n\nwettest_year\n\n# A tibble: 1 × 2\n   Year Yearly_Rain\n  &lt;dbl&gt;       &lt;dbl&gt;\n1  2021      44111.\n\nrainiest_month_by_day_count\n\n# A tibble: 1 × 4\n  Station    Year Month Rainy_Days\n  &lt;fct&gt;     &lt;dbl&gt; &lt;fct&gt;      &lt;int&gt;\n1 Admiralty  2018 Nov           30"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#wind-speed",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#wind-speed",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "4.3 Wind Speed",
+    "text": "4.3 Wind Speed\n\n# Wind\nwindiest_day &lt;- weather_EDA %&gt;% slice_max(`Mean Wind Speed (km/h)`, n = 1)\ncalmest_day &lt;- weather_EDA %&gt;% slice_min(`Mean Wind Speed (km/h)`, n = 1)\n\nwindiest_month &lt;- weather_EDA %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Monthly_Wind = mean(`Mean Wind Speed (km/h)`, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  slice_max(Monthly_Wind, n = 1)\n\nwindiest_year &lt;- weather_EDA %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Yearly_Wind = mean(`Mean Wind Speed (km/h)`, na.rm = TRUE)) %&gt;%\n  slice_max(Yearly_Wind, n = 1)\n\nwindiest_day\n\n# A tibble: 1 × 11\n  Station    Station_Type      Year Month   Day `Daily Rainfall Total (mm)`\n  &lt;fct&gt;      &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;                       &lt;dbl&gt;\n1 Pulau Ubin Full AWS Station  2019 Feb      13                           0\n# ℹ 5 more variables: `Mean Temperature (Celsius)` &lt;dbl&gt;,\n#   `Maximum Temperature (Celsius)` &lt;dbl&gt;,\n#   `Minimum Temperature (Celsius)` &lt;dbl&gt;, `Mean Wind Speed (km/h)` &lt;dbl&gt;,\n#   Date &lt;date&gt;\n\ncalmest_day\n\n# A tibble: 1 × 11\n  Station Station_Type      Year Month   Day `Daily Rainfall Total (mm)`\n  &lt;fct&gt;   &lt;chr&gt;            &lt;dbl&gt; &lt;fct&gt; &lt;dbl&gt;                       &lt;dbl&gt;\n1 Changi  Full AWS Station  2022 Oct       6                         3.4\n# ℹ 5 more variables: `Mean Temperature (Celsius)` &lt;dbl&gt;,\n#   `Maximum Temperature (Celsius)` &lt;dbl&gt;,\n#   `Minimum Temperature (Celsius)` &lt;dbl&gt;, `Mean Wind Speed (km/h)` &lt;dbl&gt;,\n#   Date &lt;date&gt;\n\nwindiest_month\n\n# A tibble: 1 × 3\n   Year Month Monthly_Wind\n  &lt;dbl&gt; &lt;fct&gt;        &lt;dbl&gt;\n1  2020 Feb           12.5\n\nwindiest_year\n\n# A tibble: 1 × 2\n   Year Yearly_Wind\n  &lt;dbl&gt;       &lt;dbl&gt;\n1  2019        9.70"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#histogram-distribution-of-each-parameter",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#histogram-distribution-of-each-parameter",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.1 Histogram distribution of each parameter",
+    "text": "5.1 Histogram distribution of each parameter\n\n# Convert data to long format for the 5 key numeric parameters\nweather_long &lt;- weather_EDA %&gt;%\n  pivot_longer(\n    cols = c(`Daily Rainfall Total (mm)`, \n             `Mean Temperature (Celsius)`, \n             `Maximum Temperature (Celsius)`, \n             `Minimum Temperature (Celsius)`, \n             `Mean Wind Speed (km/h)`),\n    names_to = \"Metric\",\n    values_to = \"Value\"\n  )\n\n# Plot all histograms using facet_wrap\nggplot(weather_long, aes(x = Value)) +\n  geom_histogram(bins = 30, fill = \"skyblue\", color = \"black\") +\n  facet_wrap(~ Metric, scales = \"free\", ncol = 2) +\n  labs(title = \"Distributions of Key Weather Metrics\", x = \"Value\", y = \"Count\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#correlation-matrix",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#correlation-matrix",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.2 Correlation matrix",
+    "text": "5.2 Correlation matrix\n\n# 1. Select numeric columns\nweather_numeric &lt;- weather_EDA %&gt;%\n  select(`Daily Rainfall Total (mm)`, `Mean Temperature (Celsius)`,\n         `Maximum Temperature (Celsius)`, `Minimum Temperature (Celsius)`,\n         `Mean Wind Speed (km/h)`)\n\n# 2. Compute correlation matrix\ncor_matrix &lt;- cor(weather_numeric, use = \"complete.obs\")\n\n# 3. Plot the correlation matrix\ncorrplot(cor_matrix, method = \"color\", addCoef.col = \"black\",\n         tl.cex = 0.9, number.cex = 0.8, title = \"Correlation Matrix\",\n         mar = c(0, 0, 2, 0))"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#density-ridge-plot-by-stations",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#density-ridge-plot-by-stations",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.3 Density ridge plot by stations",
+    "text": "5.3 Density ridge plot by stations\n\n5.3.1 Daily Rainfall\n\nggplot(weather_EDA, aes(x = `Daily Rainfall Total (mm)`, y = Station)) +\n  geom_density_ridges(\n    fill = \"steelblue\", \n    alpha = 0.6,\n    scale = 1.5,\n    color = \"white\"\n  ) +\n  labs(\n    title = \"Daily Rainfall Total (mm) Distribution by Station\",\n    x = \"Daily Rainfall Total (mm)\",\n    y = \"Station\"\n  ) +\n  theme_minimal()\n\n\n\n\n\n\n\n\n\n\n5.3.2 Mean Temperature\n\nggplot(weather_EDA, aes(x = `Mean Temperature (Celsius)`, y = Station)) +\n  geom_density_ridges(fill = \"steelblue\", alpha = 0.6, scale = 1.5, color = \"white\") +\n  labs(\n    title = \"Mean Temperature (Celsius) Distribution by Station\",\n    x = \"Mean Temperature (Celsius)\",\n    y = \"Station\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#box-plot-by-stations",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#box-plot-by-stations",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.4 Box plot by stations",
+    "text": "5.4 Box plot by stations\n\n5.4.1 Daily Rainfall\n\nggplot(weather_EDA, aes(x = Station, y = `Daily Rainfall Total (mm)`)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Daily Rainfall Total (mm) Distribution by Station\") +\n  theme_minimal() + \n  coord_flip()\n\n\n\n\n\n\n\n\n\n\n5.4.2 Mean Temperature\n\nggplot(weather_EDA, aes(x = Station, y = `Mean Temperature (Celsius)`)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Mean Temperature Distribution by Station\") +\n  theme_minimal() + \n  coord_flip()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#scatterplot---rainfall-vs-mean-temperature",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#scatterplot---rainfall-vs-mean-temperature",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.5 Scatterplot - Rainfall vs Mean Temperature",
+    "text": "5.5 Scatterplot - Rainfall vs Mean Temperature\n\nggplot(weather, aes(x = `Daily Rainfall Total (mm)`, y = `Mean Temperature (Celsius)`)) +\n  geom_point(alpha = 0.4, color = \"steelblue\") +\n  geom_smooth(method = lm, color = \"black\", linewidth = 0.8) +\n  labs(\n    title = \"Rainfall vs Mean Temperature\",\n    x = \"Daily Rainfall (mm)\",\n    y = \"Mean Temperature (°C)\"\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#pairwise-plot---all-numerical-features",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#pairwise-plot---all-numerical-features",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.6 Pairwise Plot - All Numerical Features",
+    "text": "5.6 Pairwise Plot - All Numerical Features\n\nweather_numeric &lt;- weather %&gt;%\n  select(`Daily Rainfall Total (mm)`, `Mean Temperature (Celsius)`,\n         `Maximum Temperature (Celsius)`, `Minimum Temperature (Celsius)`,\n         `Mean Wind Speed (km/h)`)\n\nggpairs(weather_numeric)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#top-stations-by-avg-temperature",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#top-stations-by-avg-temperature",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "5.7 Top Stations by Avg Temperature",
+    "text": "5.7 Top Stations by Avg Temperature\n\nweather_EDA %&gt;%\n  group_by(Station) %&gt;%\n  summarise(Mean_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  slice_max(Mean_Temp, n = 5) %&gt;%\n  ggplot(aes(x = reorder(Station, Mean_Temp), y = Mean_Temp, fill = Mean_Temp)) +\n  geom_col(show.legend = FALSE) +\n  geom_text(aes(label = round(Mean_Temp, 2)), hjust = 1.3, size = 4) +\n  scale_fill_gradient(low = \"lightblue\", high = \"steelblue\") +\n  coord_flip() +\n  labs(\n    title = \"Top 5 Stations by Average Temperature\",\n    x = \"Station\",\n    y = \"Mean Temperature (°C)\"\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#daily-mean-temperature-over-time",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#daily-mean-temperature-over-time",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.1 Daily Mean Temperature Over Time",
+    "text": "6.1 Daily Mean Temperature Over Time\n\nweather_EDA %&gt;%\n  ggplot(aes(x = Date, y = `Mean Temperature (Celsius)`)) +\n  geom_line(color = \"darkgreen\", alpha = 0.4) +\n  labs(title = \"Daily Mean Temperature Over Time\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#monthly-avg-temperature-over-years",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#monthly-avg-temperature-over-years",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.2 Monthly Avg Temperature Over Years",
+    "text": "6.2 Monthly Avg Temperature Over Years\n\nweather_EDA %&gt;%\n  mutate(\n    Year = year(Date),\n    Month = month(Date, label = TRUE)\n  ) %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = Month, y = Avg_Temp, group = Year, color = as.factor(Year))) +\n  geom_line(size = 0.8) +\n  labs(\n    title = \"Seasonal Trend of Mean Temperature – Singapore (All Stations)\",\n    x = \"Month\",\n    y = \"Mean Temperature (°C)\",\n    color = \"Year\"\n  ) +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#singapore-monthly-mean-temperature",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#singapore-monthly-mean-temperature",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.3 Singapore Monthly Mean Temperature",
+    "text": "6.3 Singapore Monthly Mean Temperature\n\n# Clean & prep data\nweather_summary &lt;- weather_EDA %&gt;%\n  group_by(Year, Month) %&gt;%\n  summarise(Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  ungroup()\n\n# Separate 2024 and 2018–2023 data\nbars_data &lt;- weather_summary %&gt;% filter(Year %in% 2018:2023)\nline_data &lt;- weather_summary %&gt;% filter(Year == 2024)\n\n# Aggregate 2018–2023 by month for bars\nbars_avg &lt;- bars_data %&gt;%\n  group_by(Month) %&gt;%\n  summarise(Avg_Temp = mean(Avg_Temp, na.rm = TRUE))\n\n# Plot\nggplot() +\n  # Bar chart for 2018–2023\n  geom_col(data = bars_avg, aes(x = Month, y = Avg_Temp), fill = \"salmon\", alpha = 0.8) +\n\n  # Line chart for 2024\n  geom_line(data = line_data, aes(x = Month, y = Avg_Temp, group = 1), color = \"black\", size = 1.2) +\n  geom_point(data = line_data, aes(x = Month, y = Avg_Temp), color = \"black\", size = 2) +\n\n  labs(\n    title = \"Singapore Monthly Mean Temperature\",\n    subtitle = \"Bar: Avg from 2018–2023 | Line: 2024\",\n    x = \"Month\",\n    y = \"Temperature (°C)\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(face = \"bold\", size = 14),\n    plot.subtitle = element_text(size = 10),\n    axis.text = element_text(size = 10)\n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#yearly-average-temperature",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#yearly-average-temperature",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.4 Yearly Average Temperature",
+    "text": "6.4 Yearly Average Temperature\n\nweather_EDA %&gt;%\n  group_by(Year) %&gt;%\n  summarise(Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = Year, y = Avg_Temp)) +\n  geom_line(color = \"darkorange\", linewidth = 1.2) +\n  geom_point() +\n  labs(title = \"Yearly Average Temperature\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#max-min-temperature-bands",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#max-min-temperature-bands",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.5 Max & Min Temperature Bands",
+    "text": "6.5 Max & Min Temperature Bands\n\nweather_EDA %&gt;%\n  group_by(Date) %&gt;%\n  summarise(Max = mean(`Maximum Temperature (Celsius)`, na.rm = TRUE),\n            Min = mean(`Minimum Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = Date)) +\n  geom_ribbon(aes(ymin = Min, ymax = Max), fill = \"lightcoral\", alpha = 0.3) +\n  geom_line(aes(y = Min), color = \"blue\") +\n  geom_line(aes(y = Max), color = \"red\") +\n  labs(title = \"Max-Min Daily Temperature Band\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#cycle-plot-of-monthly-avg-temperature-overall-singapore",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#cycle-plot-of-monthly-avg-temperature-overall-singapore",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.6 Cycle Plot of Monthly Avg Temperature – Overall Singapore",
+    "text": "6.6 Cycle Plot of Monthly Avg Temperature – Overall Singapore\n\nweather_all &lt;- weather_EDA %&gt;%\n  mutate(YearMonth = yearmonth(Date)) %&gt;%\n  group_by(YearMonth) %&gt;%\n  summarise(Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  as_tsibble(index = YearMonth)\n\n\ngg_subseries(weather_all, Avg_Temp) +\n  labs(\n    title = \"Cycle Plot of Monthly Avg Temperature – Singapore (All Stations)\",\n    y = \"Mean Temperature (°C)\",\n    x = \"Month\"\n  )"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#mean-temperature-by-month-seasonality",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#mean-temperature-by-month-seasonality",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.7 Mean Temperature by Month (Seasonality)",
+    "text": "6.7 Mean Temperature by Month (Seasonality)\n\nggplot(weather_EDA, aes(x = Month, y = `Mean Temperature (Celsius)`)) +\n  geom_boxplot(fill = \"steelblue\") +\n  labs(title = \"Monthly Mean Temperature Distribution\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#heatmap-for-mean-temperature-per-month-by-station",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#heatmap-for-mean-temperature-per-month-by-station",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.8 Heatmap for Mean Temperature per month by station",
+    "text": "6.8 Heatmap for Mean Temperature per month by station\n\nweather_EDA %&gt;%\n  group_by(Station, Month) %&gt;%\n  summarise(Avg_Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE)) %&gt;%\n  ggplot(aes(x = Month, y = Station, fill = Avg_Temp)) +\n  geom_tile() +\n  scale_fill_viridis_c(direction = -1) +\n  labs(title = \"Monthly Avg Temperature per Station\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#temperature-trend-by-station",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#temperature-trend-by-station",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "6.9 Temperature Trend by Station",
+    "text": "6.9 Temperature Trend by Station\n\nweather_EDA %&gt;%\n  group_by(Date, Station) %&gt;%\n  summarise(Temp = mean(`Mean Temperature (Celsius)`, na.rm = TRUE), .groups = \"drop\") %&gt;%\n  ggplot(aes(x = Date, y = Temp)) +\n  geom_line(color = \"darkgreen\", alpha = 0.6) +\n  facet_wrap(~ Station, scales = \"free_y\") +\n  labs(title = \"Mean Temperature Trends by Station\") +\n  theme_minimal()"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#compare-across-stations---only-admiralty-station",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#compare-across-stations---only-admiralty-station",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "7.1 Compare across Stations - only Admiralty station",
+    "text": "7.1 Compare across Stations - only Admiralty station\n\n7.1.1 Normality Check\n\n# Filter for one station \nstation_data &lt;- weather_EDA %&gt;%\n  filter(Station == \"Admiralty\")\n\nvalues &lt;- station_data$`Mean Temperature (Celsius)`\n\n# Anderson-Darling Test\nnortest::ad.test(values)\n\n\n    Anderson-Darling normality test\n\ndata:  values\nA = 2.9394, p-value = 2.196e-07\n\n\n\nggqqplot(values, title = \"QQ Plot - Mean Temp (Admiralty)\")\n\n\n\n\n\n\n\n\n\nggplot(station_data, aes(x = `Mean Temperature (Celsius)`)) +\n  geom_density(fill = \"skyblue\", alpha = 0.5) +\n  labs(title = \"Density Plot - Mean Temp\")\n\n\n\n\n\n\n\n\n\n\n7.1.2 Statistical Testing\n\nset.seed(1234)\n\ngghistostats(\n  data = station_data,\n  x = `Mean Temperature (Celsius)`,\n  type = \"nonparametric\",  \n  test.value = 28,    \n  xlab = \"Mean Temperature (°C)\",\n  title = \"Histogram Test - Mean Temp (Admiralty)\"\n)\n\n\n\n\n\n\n\n\n\nggbetweenstats(\n  data = station_data,\n  x = Station,\n  y = `Mean Temperature (Celsius)`,\n  type = \"np\",                       # non-parametric (ANOVA)\n  mean.ci = TRUE,\n  pairwise.comparisons = TRUE,\n  pairwise.display = \"s\",          # display significant ones\n  p.adjust.method = \"fdr\",\n  messages = FALSE,\n  title = \"Mean Temperature for Admiralty Station\"\n)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#compare-across-time---6-months-of-2024-for-admiralty-station",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#compare-across-time---6-months-of-2024-for-admiralty-station",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "7.2 Compare across time - 6 months of 2024 for Admiralty station",
+    "text": "7.2 Compare across time - 6 months of 2024 for Admiralty station\n\n7.2.1 Normality Check\n\n# Filter for Admiralty and specific months in 2024\nmonths_to_use &lt;- c(1, 2, 3, 4, 5, 6)  # Jan to Jun\n\nadmiralty_data &lt;- weather_EDA %&gt;%\n  filter(Station == \"Admiralty\", year(Date) == 2024, month(Date) %in% months_to_use) %&gt;%\n  mutate(Month = factor(month(Date, label = TRUE)))\n\n\nad_test_results &lt;- admiralty_data %&gt;%\n  group_by(Month) %&gt;%\n  summarise(\n    AD_Stat = round(nortest::ad.test(`Mean Temperature (Celsius)`)$statistic, 3),\n    p_value = signif(nortest::ad.test(`Mean Temperature (Celsius)`)$p.value, 3)\n  )\n\nad_test_results\n\n# A tibble: 6 × 3\n  Month AD_Stat  p_value\n  &lt;ord&gt;   &lt;dbl&gt;    &lt;dbl&gt;\n1 Jan     0.908 0.0181  \n2 Feb     0.544 0.148   \n3 Mar     0.383 0.377   \n4 Apr     0.303 0.554   \n5 May     0.517 0.175   \n6 Jun     1.58  0.000353\n\n\n\nqq_plot_list &lt;- admiralty_data %&gt;%\n  group_split(Month) %&gt;%\n  map(~ ggqqplot(.x$`Mean Temperature (Celsius)`,\n                 title = paste(\"QQ Plot\"),\n                 xlab = \"Theoretical Quantiles\",\n                 ylab = \"Sample Quantiles\"))\n\n# Combine into grid layout\nwrap_plots(qq_plot_list, ncol = 3)\n\n\n\n\n\n\n\n\n\nggplot(admiralty_data, aes(x = `Mean Temperature (Celsius)`, y = Month)) +\n  geom_density_ridges(fill = \"skyblue\", alpha = 0.6, scale = 1.2, color = \"white\") +\n  labs(\n    title = \"Density Ridgeline Plot – Mean Temperature by Month\",\n    x = \"Mean Temperature (°C)\",\n    y = \"Month\"\n  ) +\n  theme_minimal() +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\n\n\n\n\n7.2.2 Statistical Testing\n\n# Run CDA (e.g., ANOVA or Kruskal)\nggbetweenstats(\n  data = admiralty_data,\n  x = Month,                                      # Compare across months\n  y = `Mean Temperature (Celsius)`,\n  type = \"np\",                                     # non-parametric \n  mean.ci = TRUE,\n  pairwise.comparisons = TRUE,\n  pairwise.display = \"s\",                         # Show significant ones only\n  p.adjust.method = \"fdr\",\n  messages = FALSE,\n  title = \"Comparing Mean Temperature by Month – Admiralty, 2024\"\n)"
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#section-one-eda",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#section-one-eda",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "8.1 Section One (EDA)",
+    "text": "8.1 Section One (EDA)\n\n8.1.1 Overview\nThis section serves as the starting point for users to gain a high-level understanding of Singapore’s weather patterns between 2018 and 2024. It provides an interactive interface where users can select from five key weather parameters—Mean Temperature, Maximum Temperature, Minimum Temperature, Daily Rainfall Total, and Mean Wind Speed—using a dropdown menu. Once a parameter is selected, all visualizations on the page dynamically update to reflect the corresponding data.\n\nAt the center of the layout, users are presented with a yearly trend chart that plots the average annual value of the selected parameter (total for rainfall) across all stations. This allows users to observe long-term changes or trends over time. Directly below, a comparative monthly chart is displayed. This includes a bar plot representing the monthly averages across the years 2018 to 2023, overlaid with a line graph for the year 2024. This dual-view enables users to assess how current year readings compare with historical norms and spot anomalies or deviations.\nOn the right side of the dashboard, users will find summary statistic boxes that highlight the hottest and coolest months and days based on the selected parameter. These provide immediate access to extreme weather records, allowing users to pinpoint key dates or periods of interest. Below that, a horizontal bar chart showcases the top five stations with the highest average values for the selected parameter. For Minimum Temperature - it will showcase bottom 5 stations with lowest average value. This gives users a quick spatial comparison and helps identify high-impact or hotspot locations.\n\n\n8.1.2 Seasonality Analysis\nThis section focuses on helping users explore how weather parameters vary cyclically across months and years, highlighting recurring seasonal trends in Singapore’s climate. This module allows users to choose from the five core weather parameters using a parameter selector. Additionally, users can choose to view trends for all stations collectively or zoom in on an individual station using the station selection dropdown.\n\nOn the left side of the layout, a seasonal trend line chart is displayed. This chart shows the monthly average values for the selected parameter over each year from 2018 to 2024. Each line represents one year, allowing users to compare how the pattern evolves annually and whether a specific year deviates significantly from the typical trend. This visualization is particularly useful for spotting shifts in seasonal behavior over time.\nTo the right, the cycle plot further enhances seasonality analysis by breaking down monthly averages over all years in a unique format. It displays individual time series trends within each month across years, with blue horizontal lines marking the monthly mean. This allows users to easily identify both intra-annual (within year) and inter-annual (between year) variations for each month.\n\n\n8.1.3 Station Comparison\nThis section allows users to analyze how weather parameters vary across different stations in Singapore. It is designed to uncover spatial differences in weather behavior, helping users identify which locations are consistently hotter, wetter, windier, or more variable compared to others. Users can select any of the five key weather parameters from a dropdown menu and choose the time interval using a radio button input—either viewing data aggregated across all years (overall) or for a specific year.\n\nThis section is split into two main views. The Station-wise Distribution tab presents a boxplot that shows the distribution of the selected weather parameter for each station. This visualization allows users to compare the spread, median, and outliers of measurements across different locations, giving insight into variability and extremes observed at specific stations.\n\nThe second tab, Month-by-Station Variation, displays a heatmap showing how the selected parameter changes across both stations and months. Each row represents a station, and each column represents a month, with color intensity reflecting the average value. This view provides a deeper look at seasonal variation across locations, enabling users to identify patterns such as which stations tend to experience warmer months or higher rainfall during particular times of the year."
+  },
+  {
+    "objectID": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#section-two-cda",
+    "href": "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html#section-two-cda",
+    "title": "Take-home Ex 3 - Prototyping Modules for Visual Analytics Shiny Application",
+    "section": "8.2 Section Two (CDA)",
+    "text": "8.2 Section Two (CDA)\n\n8.2.1 Compare Across Stations\nThis module under the CDA section allows users to statistically assess differences in weather parameters across multiple stations. This section is designed for hypothesis testing and validation of observed patterns, offering users tools to check for statistical significance in station-level variations. The interface supports selection of the parameter to be tested (e.g., Mean Temperature, Rainfall), the time interval of interest (overall, specific year, or a specific month-year), and the list of stations to include in the comparison.\n\nThe first part of the interface focuses on normality testing, where users can check whether the selected parameter follows a normal distribution for each selected station. Upon clicking the “Run Normality Test” button, the system generates a QQ plot for visual inspection alongside the output from a formal test such as the Anderson-Darling test. This step helps guide users in selecting the appropriate statistical test (parametric or non-parametric) for their group comparison.\n\nOnce normality has been assessed, users can proceed to perform the statistical group test using the “Run Statistic Test” tab. Users can select the test type, set a confidence level, and choose whether to view pairwise comparisons of stations where applicable. If pairwise comparison is enabled, users can also select how the comparisons are displayed—either all pairs or only significant ones. Depending on the number of stations selected, the application adapts the output accordingly. If only one station is selected, a histogram is displayed along with a one-sample test result. If two or more stations are selected, a box-violin plot is generated along with the output from a multi-group comparison test (e.g., ANOVA or Kruskal-Wallis).\n\n\n8.2.2 Compare Across Time\nThis module allows users to statistically analyze how a selected weather parameter varies over different time periods within a single station. This section is particularly useful for identifying significant shifts or changes in weather patterns across months, years, or specific time combinations. Users begin by selecting a weather parameter (e.g., Mean Temperature, Rainfall), followed by the station of interest. The time-based filtering options allow comparisons by year, by month across all years, selected months for a specific year, or the same month across multiple years.\n\nThe first part of this module focuses on normality testing across time groups. Once users choose the relevant filters and run the test, a set of QQ plots is generated—one for each selected time category—alongside a table showing the Anderson-Darling test results. This allows users to assess whether the data for each time slice follows a normal distribution, which in turn helps them determine the most appropriate statistical test (parametric or non-parametric) for further analysis.\n\nOnce normality is assessed, users can proceed to run statistical tests to compare values across the selected time categories. Users can specify the test type, set the confidence level, and choose whether to show pairwise comparisons. If pairwise testing is enabled, the app displays statistical significance between time pairs using clear visual indicators and adjusted p-values. If only one time category is selected, a histogram is generated to display the distribution of the chosen parameter. However, when two or more time categories are selected, a box-violin plot is shown, complete with statistical annotations."
   }
 ]
